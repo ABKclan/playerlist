@@ -166,7 +166,14 @@ function ListGUI:TextChanged()
 
 	if text:len() > 0 then
 		for k, v in pairs(self.Rows) do
-			local visible = (string.find( v:GetCellText(1):lower(), text ) == 1)
+			local visible = false
+			if ( string.sub(text, 1, 1) == "[" ) or ( string.sub(text, 1, 1) == "(" ) or ( string.sub(text, 1, 1) == "%" ) then
+				--there could be a better way, but fixed an error occurring if any of these are true -[ABK]Necro
+				visible = true
+			elseif string.find( v:GetCellText(1):lower(), text ) ~= nil then
+				--this way it finds the string ANYwhere in the players name -[ABK]Necro
+				visible = true
+			end	
 
 			v:SetVisible( visible )
 		end
